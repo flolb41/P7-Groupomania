@@ -1,3 +1,8 @@
+/**
+ * Modèle d'utilisateur pour la base de données MySQL.
+ * @param {*} sequelize 
+ * @param {*} Sequelize 
+ */
 module.exports = (sequelize, Sequelize) => {
   const User = sequelize.define("user", {
     id: {
@@ -8,7 +13,7 @@ module.exports = (sequelize, Sequelize) => {
     },
     name: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: false
 
     },
     email: {
@@ -21,6 +26,5 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: false,
     },
   });
-
   return User;
 };

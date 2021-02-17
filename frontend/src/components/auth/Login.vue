@@ -20,6 +20,7 @@
           v-model="password"
           type="password"
           placeholder="Mot de passe"
+          minlength="8"
           required
         />
       </div>
@@ -45,7 +46,10 @@ export default {
       };
       this.$store
         .dispatch("login", user)
-        .then(() => this.$router.push("/resources"))
+        .then((res) => {
+          console.log(res);
+          this.$router.push("/resources");
+          })
         .catch((err) => {
           console.log(err);
           alert('Identifiants invalides !! Veuillez vérifier votre saisie.')

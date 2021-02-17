@@ -4,15 +4,38 @@
     <form @submit.prevent="register">
       <div class="form-group">
         <label for="name">Nom :</label>
-        <input class="form-control" id="name" type="text" v-model="name" placeholder="Nom" required autofocus />
+        <input
+          class="form-control"
+          id="name"
+          type="text"
+          v-model="name"
+          placeholder="Nom"
+          required
+          autofocus
+        />
       </div>
       <div class="form-group">
         <label for="email">Adresse e-mail :</label>
-        <input class="form-control" id="email" type="email" v-model="email" placeholder="Adresse e-mail" required />
+        <input
+          class="form-control"
+          id="email"
+          type="email"
+          v-model="email"
+          placeholder="Adresse e-mail"
+          required
+        />
       </div>
       <div class="form-group">
         <label for="password">Mot de passe :</label>
-        <input class="form-control" id="password" type="password" v-model="password" placeholder="Mot de passe" required />
+        <input
+          class="form-control"
+          id="password"
+          type="password"
+          v-model="password"
+          placeholder="Mot de passe"
+          minlength="8"
+          required
+        />
       </div>
       <div class="form-group">
         <label for="password-confirm">Confirmation Mot de passe :</label>
@@ -22,6 +45,7 @@
           type="password"
           v-model="password_confirmation"
           placeholder="Confirmez mot de passe"
+          minlength="8"
           required
         />
       </div>
@@ -34,14 +58,14 @@
 
 <script>
 export default {
-  name: 'register',
+  name: "register",
   data() {
     return {
       name: "",
       email: "",
       password: "",
-      password_confirmation: ""
-  }
+      password_confirmation: "",
+    };
   },
   methods: {
     register() {

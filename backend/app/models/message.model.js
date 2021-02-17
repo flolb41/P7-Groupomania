@@ -1,3 +1,8 @@
+/**
+ * Modèle de Message pour la base de données MySQL.
+ * @param {*} sequelize 
+ * @param {*} Sequelize 
+ */
 module.exports = (sequelize, Sequelize) => {
   const Message = sequelize.define("message", {
     id: {
@@ -6,8 +11,8 @@ module.exports = (sequelize, Sequelize) => {
       primaryKey: true,
       allowNull: false,
     },
-    name: {
-      type: Sequelize.STRING,
+    userId: {
+      type: Sequelize.INTEGER,
       allowNull: false,
       foreignKey: true,
     },

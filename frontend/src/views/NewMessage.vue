@@ -27,10 +27,11 @@ export default {
   methods: {
     envoiMessage() {
       let message = {
-        name: localStorage.getItem("user"),
+        userId: localStorage.getItem("id"),
         title: this.title,
         content: this.content,
       };
+      console.log(message);
       this.$store
         .dispatch("envoiMessage", message)
         .then(() => {

@@ -13,12 +13,12 @@
       </div>
       <form class="form-group">
         <label class="name">Nom :</label>
-        <input class="form-control" v-model="name" disabled />
+        <input class="form-control" v-model="userData.name" disabled />
         <label class="email">E-mail :</label>
         <input
           class="form-control"
           type="email"
-          v-model="email"
+          v-model="userData.email"
           disabled
         />
         <label for="password1" class="password">Nouveau mot de passe :</label>
@@ -29,6 +29,7 @@
           name="up"
           v-model="password"
           v-bind:disabled="disabled"
+          minlength="8"
         />
         <label for="password2" class="password-confirmation"
           >Confirmez votre nouveau mot de passe :</label
@@ -39,6 +40,7 @@
           type="password"
           name="up2"
           v-bind:disabled="disabled"
+          minlength="8"
         />
       </form>
     </div>
@@ -57,18 +59,26 @@
 export default {
   data() {
     return {
-      email: localStorage.getItem("email"),
-      name: localStorage.getItem('user'),
+      userData: {},
       password: '',
       disabled: true,
     };
   },
   methods: {
+    getUserData() {
+      const user = { id: localStorage.getItem('id') };
+      this.$store
+        .dispatch("getUserData", user)
+        .then((res) => {
+          return this.userData = res.data;
+        })
+        .catch((err) => console.log(err));
+    },
     updateUser() {
       const user = {
         id: this.id, 
-        name: this.name,
-        email: this.email,
+        name: this.userData.name,
+        email: this.userData.email,
         password: this.password
       };
       this.$store
@@ -95,6 +105,9 @@ export default {
           return false;
           }
     },  
+  },
+  mounted() {
+    this.getUserData();
   }
 };
 </script>

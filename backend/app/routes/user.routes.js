@@ -1,17 +1,33 @@
+/**
+ * Fichier de listing des routes Utilisateurs.
+ */
 const express = require("express");
 const router = express.Router();
 const userCtrl = require('../controllers/user.ctrl.js')
 
-// creation d'un utilisateur
+/**
+ * Création d'un utilisateur.
+ */ 
 router.post("/register", userCtrl.register); 
 
-// connection d'un utilisateur
+/**
+ * Connection d'un utilisateur.
+ */ 
 router.post("/login", userCtrl.login);
 
-// modification d'un utilisateur
+/**
+ * Récupération données utilisateur
+ */
+router.get("/get/", userCtrl.getUserData);
+
+/**
+ * Modification d'un utilisateur.
+ */ 
 router.put('/update', userCtrl.update);
 
-// supression d'un utilisateur
+/**
+ * Supression d'un utilisateur.
+ */ 
 router.delete("/delete/", userCtrl.delete);
 
 module.exports = router;

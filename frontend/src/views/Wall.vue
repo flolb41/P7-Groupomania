@@ -9,14 +9,14 @@
         <div class="delete">
           <h4 class="created-by">
             Posté par :<br />
-            {{ message.name }}
+            {{ message.user.name }}
           </h4>
           <h4 class="date">
             Le : <br />
-            {{ message.createdAt }}
+            {{ dateTime() }}
           </h4>
           <button
-            v-if="userLogged == message.name"
+            v-if="userIdLogged == message.user.id"
             class="btn btn-danger btn-delete"
             @click="deleteMessage(message.id)"
           >
@@ -33,17 +33,21 @@
 </template>
 
 <script>
+import moment from 'moment';
+
 export default {
   name: "wall",
   data() {
     return {
       allMessages: [],
       message: {},
-      userLogged: localStorage.getItem("user"),
+      userIdLogged: localStorage.getItem("id"),
     };
   },
   methods: {
     deleteMessage(id) {
+      const reponse = window.confirm('Attention !! Etes-vous sûr de vouloir supprimer ce message ?');
+        if (reponse === true) {
       let message = { id: id };
       console.log(message);
       this.$store
@@ -53,6 +57,10 @@ export default {
           console.log(res.data);
         })
         .catch((err) => console.log(err));
+    }
+    },
+    dateTime() {
+      return moment(this.message.createdAt).format('LLL');
     },
   },
   mounted() {

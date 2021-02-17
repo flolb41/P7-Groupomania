@@ -29,6 +29,36 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    register({ commit }, user) {
+      return new Promise((resolve, reject) => {
+        commit("auth_request");
+        axios({
+          url: "http://localhost:3000/api/auth/register",
+          data: user,
+          method: "POST",
+        })
+          .then((res) => {
+            console.log(res);
+            const token = res.data.token;
+            const id = res.data.id;
+            console.log(user);
+            localStorage.setItem("token", token);
+            localStorage.setItem("id", id);
+
+            // Add the following line:
+            axios.defaults.headers.common["Authorization"] = token;
+            commit("auth_success", token);
+            resolve(res);
+          })
+          .catch((err) => {
+            commit("auth_error", err);
+            localStorage.removeItem("token");
+            reject(err);
+            console.log(err.message);
+            console.log("Erreur lors de la création!");
+          });
+      });
+    },
     login({ commit }, user) {
       return new Promise((resolve, reject) => {
         commit("auth_request");
@@ -39,17 +69,13 @@ export default new Vuex.Store({
         })
           .then((res) => {
             const token = res.data.token;
-            const user = res.data.name;
-            const email = res.data.email;
             const id = res.data.id;
             localStorage.setItem("token", token);
-            localStorage.setItem("user", user);
-            localStorage.setItem('email', email)
             localStorage.setItem("id", id);
             
             // Add the following line:
             axios.defaults.headers.common["Authorization"] = token;
-            commit("auth_success", token, user);
+            commit("auth_success", token);
             resolve(res);
           })
           .catch((err) => {
@@ -60,49 +86,31 @@ export default new Vuex.Store({
           });
       });
     },
-    register({ commit }, user) {
-      return new Promise((resolve, reject) => {
-        commit("auth_request");
-        axios({
-          url: "http://localhost:3000/api/auth/register",
-          data: user,
-          method: "POST",
-        })
-          .then((res) => {
-            const token = res.data.token;
-            const user = res.data.name;
-            const email = res.data.email;
-            const id = res.data.id;
-            console.log(user);
-            localStorage.setItem("token", token);
-            localStorage.setItem("user", user);
-            localStorage.setItem("email", email);
-            localStorage.setItem("id", id);
-
-            // Add the following line:
-            axios.defaults.headers.common["Authorization"] = token;
-            commit("auth_success", token, user);
-            resolve(res);
-          })
-          .catch((err) => {
-            commit("auth_error", err);
-            localStorage.removeItem("token");
-            localStorage.removeItem("user");
-            reject(err);
-            console.log(err.message);
-            console.log("Erreur lors de la création!");
-          });
-      });
-    },
+    
     logout({ commit }) {
       return new Promise((resolve) => {
         commit("logout");
         localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        localStorage.removeItem("email");
         localStorage.removeItem("id");
         delete axios.defaults.headers.common["Authorization"];
         resolve();
+      });
+    },
+    getUserData({ commit }, user) {
+      return new Promise((resolve, reject) => {
+        commit("auth_request");
+        axios({
+          url: "http://localhost:3000/api/auth/get/",
+          data: user,
+          method: "GET",
+        })
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((err) => {
+            commit("auth_error", err);
+            reject(err);
+          });
       });
     },
     updateUser({ commit }, user) {
@@ -132,8 +140,6 @@ export default new Vuex.Store({
           method: "DELETE",
         })
           .then((res) => {
-            localStorage.removeItem("email");
-            localStorage.removeItem("user");
             localStorage.removeItem("token");
             commit("logout");
             resolve(res);
