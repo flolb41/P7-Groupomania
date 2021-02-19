@@ -38,10 +38,10 @@ export default new Vuex.Store({
           method: "POST",
         })
           .then((res) => {
-            console.log(res);
+            const userName = res.data.name;
             const token = res.data.token;
             const id = res.data.id;
-            console.log(user);
+            localStorage.setItem("userName", userName);
             localStorage.setItem("token", token);
             localStorage.setItem("id", id);
 
@@ -68,11 +68,13 @@ export default new Vuex.Store({
           method: "POST",
         })
           .then((res) => {
+            const userName = res.data.name;
             const token = res.data.token;
             const id = res.data.id;
+            localStorage.setItem("userName", userName);
             localStorage.setItem("token", token);
             localStorage.setItem("id", id);
-            
+
             // Add the following line:
             axios.defaults.headers.common["Authorization"] = token;
             commit("auth_success", token);
@@ -86,25 +88,26 @@ export default new Vuex.Store({
           });
       });
     },
-    
+
     logout({ commit }) {
       return new Promise((resolve) => {
         commit("logout");
         localStorage.removeItem("token");
         localStorage.removeItem("id");
+        localStorage.removeItem("user");
         delete axios.defaults.headers.common["Authorization"];
         resolve();
       });
     },
-    getUserData({ commit }, user) {
+    getUserData({ commit }, userId) {
       return new Promise((resolve, reject) => {
-        commit("auth_request");
+        console.log(userId);
         axios({
-          url: "http://localhost:3000/api/auth/get/",
-          data: user,
+          url: "http://localhost:3000/api/auth/get/" + userId,
           method: "GET",
         })
           .then((res) => {
+            console.log(res.data);
             resolve(res);
           })
           .catch((err) => {

@@ -13,7 +13,7 @@
           </h4>
           <h4 class="date">
             Le : <br />
-            {{ dateTime() }}
+            {{ dateFormat(message.createdAt) }}
           </h4>
           <button
             v-if="userIdLogged == message.user.id"
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import moment from 'moment';
+import moment from "moment";
 
 export default {
   name: "wall",
@@ -46,22 +46,25 @@ export default {
   },
   methods: {
     deleteMessage(id) {
-      const reponse = window.confirm('Attention !! Etes-vous sûr de vouloir supprimer ce message ?');
-        if (reponse === true) {
-      let message = { id: id };
-      console.log(message);
-      this.$store
-        .dispatch("deleteMessage", message)
-        .then((res) => {
-          document.location.reload();
-          console.log(res.data);
-        })
-        .catch((err) => console.log(err));
+      const reponse = window.confirm(
+        "Attention !! Etes-vous sûr de vouloir supprimer ce message ?"
+      );
+      if (reponse === true) {
+        let message = { id: id };
+        console.log(message);
+        this.$store
+          .dispatch("deleteMessage", message)
+          .then((res) => {
+            document.location.reload();
+            console.log(res.data);
+          })
+          .catch((err) => console.log(err));
+      }
+    },
+    dateFormat(date) {
+      moment.locale('fr');
+      return moment(date).format('LLLL');
     }
-    },
-    dateTime() {
-      return moment(this.message.createdAt).format('LLL');
-    },
   },
   mounted() {
     this.$store
@@ -78,8 +81,8 @@ export default {
 <style lang="scss">
 .message-list {
   padding: 10px;
-  height: 60vh;
-  margin: 0 5%;
+  height: 90vh;
+  margin: 0 0 5% 0;
   overflow: auto;
   display: flex;
   flex-direction: column;

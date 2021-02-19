@@ -25,6 +25,7 @@ exports.register = (req, res, next) => {
         .then((user) => {
           res.status(201).send({
             id: user.id,
+            name: user.name,
             token: jwt.sign({ userId: user._id }, "RANDOM_TOKEN_SECRET", {
               expiresIn: "24h",
             }),
@@ -68,6 +69,7 @@ exports.login = (req, res, next) => {
             } else {
               res.status(200).json({
                 id: user.id,
+                name: user.name,
                 token: jwt.sign({ userId: user._id }, "RANDOM_TOKEN_SECRET", {
                 expiresIn: "24h",
                 }),
@@ -88,10 +90,12 @@ exports.login = (req, res, next) => {
 };
 
 exports.getUserData = (req, res, next) => {
-  const user = req.body.id;
-  User.findOne(user, { where: { id: user } })
+  const user = req.params.id;
+  console.log(req.params.id);
+  User.findOne({ where: { id: user } })
     .then((user) => {
       res.status(200).send({
+        id: user.id,
         name: user.name,
         email: user.email
       })

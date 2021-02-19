@@ -18,7 +18,7 @@ router.post("/login", userCtrl.login);
 /**
  * Récupération données utilisateur
  */
-router.get("/get/", userCtrl.getUserData);
+router.get("/get/:id", userCtrl.getUserData);
 
 /**
  * Modification d'un utilisateur.

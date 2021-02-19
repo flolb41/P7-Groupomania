@@ -2,9 +2,9 @@
   <div>
     <div class="new-message">
       <form class="form-goup">
-        <label for="title">Titre</label>
+        <label for="title" class="new-mess-title">Titre</label>
         <input class="form-control titre col-6" type="text" v-model="title" autofocus required />
-        <label for="message">Message</label>
+        <label for="message" class="new-mess-content">Message</label>
         <textarea class="form-control col-6" type="textarea" v-model="content" required></textarea>
         <button class="btn btn-primary" @click.once="envoiMessage">
           Envoyer
@@ -19,7 +19,7 @@ export default {
   name: "messages",
   data() {
     return {
-      name: localStorage.getItem("user"),
+      name: this.name,
       title: "",
       content: "",
     };
@@ -47,15 +47,19 @@ export default {
 <style lang="scss" scoped>
 .new-message {
   width: 100%;
-  margin: 110px auto 0 auto;
+}
+.new-mess-title, .new-mess-content {
+  float: left;
+  margin: 10% 2% 0 2%;
 }
 .titre {
-  width: 30%;
-  margin: 2% auto;
+  width: 90%;  
+  margin: auto;
 }
 textarea {
-  width: 50%;
+  width: 90%;
   margin: auto;
+  height: 200px;
 }
 button {
   margin: 2% auto;

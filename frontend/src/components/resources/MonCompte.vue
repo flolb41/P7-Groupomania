@@ -60,26 +60,17 @@ export default {
   data() {
     return {
       userData: {},
-      password: '',
+      password: "",
       disabled: true,
     };
   },
   methods: {
-    getUserData() {
-      const user = { id: localStorage.getItem('id') };
-      this.$store
-        .dispatch("getUserData", user)
-        .then((res) => {
-          return this.userData = res.data;
-        })
-        .catch((err) => console.log(err));
-    },
     updateUser() {
       const user = {
-        id: this.id, 
+        id: this.localStorage.getItem("id"),
         name: this.userData.name,
         email: this.userData.email,
-        password: this.password
+        password: this.password,
       };
       this.$store
         .dispatch("updateUser", user)
@@ -88,27 +79,35 @@ export default {
           console.log(res.data);
         })
         .catch((err) => console.log(err));
-    },    
+    },
     deleteUser() {
-      const reponse = window.confirm('Attention !! Etes-vous sûr de vouloir supprimer votre compte ?');
-        if(reponse == true) { 
-      console.log(localStorage.getItem('id'));
-      const user = { id: localStorage.getItem('id') };
-      this.$store
-        .dispatch("deleteUser", user)
-        .then(() => {
-          this.$store.dispatch("logout").then(() => {
-            this.$router.push("/login");
+      const reponse = window.confirm(
+        "Attention !! Etes-vous sûr de vouloir supprimer votre compte ?"
+      );
+      if (reponse == true) {
+        console.log(localStorage.getItem("id"));
+        const user = { id: localStorage.getItem("id") };
+        this.$store
+          .dispatch("deleteUser", user)
+          .then(() => {
+            this.$store.dispatch("logout").then(() => {
+              this.$router.push("/login");
+            });
           })
-        }).catch((err) => console.log(err));
-        } else { 
-          return false;
-          }
-    },  
+          .catch((err) => console.log(err));
+      } else {
+        return false;
+      }
+    },
   },
   mounted() {
-    this.getUserData();
-  }
+    const userId = localStorage.getItem("id");
+    console.log(userId);
+    this.$store.dispatch("getUserData", userId).then((response) => {
+      console.log(response.data);
+      return this.userData = response.data;
+    });
+  },
 };
 </script>
 <style lang="scss">
