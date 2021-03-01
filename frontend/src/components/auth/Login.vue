@@ -45,8 +45,7 @@ export default {
       };
       this.$store
         .dispatch("login", user)
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           this.$router.push("/resources");
           })
         .catch((err) => {

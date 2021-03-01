@@ -3,10 +3,11 @@
     <div class="infos-compte">
       <h3>Mon compte</h3>
       <div class="securite">
-        <p class="unlock">Cochez pour modifier vos données</p>
+        <p class="unlock">Cochez pour modifier vos données : </p>
         <input
+          id="unlock"
           type="checkbox"
-          name="name"
+          name="unlock"
           @click="disabled = !disabled"
           class="input-group enable-name"
         />
@@ -75,14 +76,20 @@ export default {
         password: this.password,
         pwdConf: this.pwdConf
       };
+      if(user.password === ""){
+        alert('Votre mot de passe ne peut pas rester vide !!')
+      } else {
       this.$store
         .dispatch("updateUser", user)
         .then(() => {
+          alert("Mot de passe mis à jour !!");
+          document.location.reload();
         })
         .catch((err) => {
           alert('Mots de passe différents, confirmation impossible !!');
           console.log(err);
         });
+      }
     },
     deleteUser() {
       const reponse = window.confirm(
@@ -115,6 +122,10 @@ export default {
 <style lang="scss">
 .infos-compte {
   margin: 120px 15% 0 15%;
+}
+label {
+  margin-top: 10px;
+  float: left;
 }
 .name-input {
   text-transform: capitalize;

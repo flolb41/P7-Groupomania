@@ -6,7 +6,9 @@
       </div>
       <div class="card-body">
         <form class="form-goup">
-          <label for="title" class="new-mess-title col-form-label-lg">Titre</label>
+          <label for="title" class="new-mess-title col-form-label-lg"
+            >Titre</label
+          >
           <input
             class="form-control titre"
             type="text"
@@ -14,7 +16,9 @@
             autofocus
             required
           />
-          <label for="message" class="new-mess-content col-form-label-lg">Message</label>
+          <label for="message" class="new-mess-content col-form-label-lg"
+            >Message</label
+          >
           <textarea
             class="form-control"
             type="textarea"
@@ -50,14 +54,17 @@ export default {
         title: this.title,
         content: this.content,
       };
-      console.log(message);
-      this.$store
-        .dispatch("envoiMessage", message)
-        .then(() => {
-          document.location.reload();
-          console.log("Message envoyé !!");
-        })
-        .catch((err) => console.log(err));
+      if (message.title === "" || message.content === "") {
+        alert("Veuillez remplir les champs avant d'envoyer !!!");
+      } else {
+        this.$store
+          .dispatch("envoiMessage", message)
+          .then(() => {
+            document.location.reload();
+            console.log("Message envoyé !!");
+          })
+          .catch((err) => console.log(err));
+      }
     },
   },
 };
@@ -90,7 +97,7 @@ button {
 }
 @media only screen and (max-width: 900px) {
   .card {
-    width: 80%
+    width: 80%;
   }
 }
 </style>
