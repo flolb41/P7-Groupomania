@@ -10,16 +10,18 @@
         <img src="../assets/icon-left-font-new.png" alt="" />
         <nav class="menu">
           <a href="#"><router-link to="/">Home</router-link></a>
-          <a href="#" v-if="isLoggedIn"><router-link to="/moncompte">Mon compte</router-link></a>
+          <a href="#" v-if="isLoggedIn" @click="logout">Déconnection</a>
+          <a href="#" v-else
+            ><router-link to="/login">Connection</router-link></a
+          >
+          <a href="#" v-if="isLoggedIn"
+            ><router-link to="/moncompte">Mon compte</router-link></a
+          >
           <a href="#" v-if="!isLoggedIn"
             ><router-link to="/register">Inscription</router-link></a
           >
           <a href="#" v-else
             ><router-link to="/resources">Messagerie</router-link></a
-          >
-          <a href="#" v-if="isLoggedIn" @click="logout">Déconnection</a>
-          <a href="#" v-else
-            ><router-link to="/login">Connection</router-link></a
           >
           <a href="#"><router-link to="/about">A propos</router-link></a>
         </nav>
@@ -43,10 +45,15 @@ export default {
     },
   },
   methods: {
-    logout: function () {
-      this.$store.dispatch("logout").then(() => {
-        this.$router.push("/login");
-      });
+    logout() {
+      const reponse = window.confirm(
+        "Etes-vous sûr de vouloir vous déconnecter ?"
+      );
+      if (reponse == true) {
+        this.$store.dispatch("logout").then(() => {
+          this.$router.push("/login");
+        });
+      }
     },
   },
 };
@@ -76,13 +83,13 @@ a:link {
   height: auto;
 }
 #header-site img {
-  width: 45%;
+  width: 30%;
   max-width: 350px;
-  margin: 2% 2% 0 2% ;
+  margin: 2% 0 0 2%;
   float: left;
 }
 nav {
-  width: 60%;
+  width: 68%;
   text-align: right;
   float: right;
   padding-top: 3%;
@@ -97,7 +104,7 @@ nav a {
 nav a.router-link-exact-active {
   color: #fd2d01;
 }
-@media only screen and (max-width: 925px) {
+@media only screen and (max-width: 900px) {
   .site-pusher {
     transition-duration: 0.3s;
     transform: translateX(0px);
@@ -124,9 +131,10 @@ nav a.router-link-exact-active {
     left: 16px;
     box-shadow: 0 10px 0 1px black, 0 16px 0 1px black, 0 22px 0 1px black;
   }
-  img {
-    width: 100%;
-    margin: 0 20%;
+  #header-site img {
+    width: 50%;
+    float: none;
+    margin: 10px 100px 5px 0;
   }
   .menu {
     position: absolute;

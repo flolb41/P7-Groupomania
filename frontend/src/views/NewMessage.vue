@@ -1,15 +1,33 @@
 <template>
   <div>
-    <div class="new-message">
-      <form class="form-goup">
-        <label for="title" class="new-mess-title">Titre</label>
-        <input class="form-control titre col-6" type="text" v-model="title" autofocus required />
-        <label for="message" class="new-mess-content">Message</label>
-        <textarea class="form-control col-6" type="textarea" v-model="content" required></textarea>
+    <div class="card new-message">
+      <div class="card-header">
+        <p class="hello">Bonjour {{ userName }} !!</p>
+      </div>
+      <div class="card-body">
+        <form class="form-goup">
+          <label for="title" class="new-mess-title col-form-label-lg">Titre</label>
+          <input
+            class="form-control titre"
+            type="text"
+            v-model="title"
+            autofocus
+            required
+          />
+          <label for="message" class="new-mess-content col-form-label-lg">Message</label>
+          <textarea
+            class="form-control"
+            type="textarea"
+            v-model="content"
+            required
+          ></textarea>
+        </form>
+      </div>
+      <div class="card-footer">
         <button class="btn btn-primary" @click.once="envoiMessage">
           Envoyer
         </button>
-      </form>
+      </div>
     </div>
   </div>
 </template>
@@ -19,6 +37,7 @@ export default {
   name: "messages",
   data() {
     return {
+      userName: localStorage.getItem("userName"),
       name: this.name,
       title: "",
       content: "",
@@ -48,21 +67,30 @@ export default {
 .new-message {
   width: 100%;
 }
-.new-mess-title, .new-mess-content {
-  float: left;
-  margin: 10% 2% 0 2%;
+.hello {
+  font-size: 2rem;
+  text-transform: capitalize;
 }
-.titre {
-  width: 90%;  
-  margin: auto;
+label {
+  font-size: 1.5rem;
 }
-textarea {
-  width: 90%;
+.form-control {
+  font-size: 1.5em;
+}
+.card {
+  width: 50%;
+}
+.card-body {
   margin: auto;
-  height: 200px;
+  width: 100%;
 }
 button {
-  margin: 2% auto;
-  width: 20%;
+  font-size: 2em;
+  margin: auto;
+}
+@media only screen and (max-width: 900px) {
+  .card {
+    width: 80%
+  }
 }
 </style>

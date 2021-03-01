@@ -101,13 +101,11 @@ export default new Vuex.Store({
     },
     getUserData({ commit }, userId) {
       return new Promise((resolve, reject) => {
-        console.log(userId);
         axios({
           url: "http://localhost:3000/api/auth/get/" + userId,
           method: "GET",
         })
           .then((res) => {
-            console.log(res.data);
             resolve(res);
           })
           .catch((err) => {

@@ -2,8 +2,8 @@
   <div class="login">
     <form class="login-form" @submit.prevent="login">
       <h2>Connection</h2>
-      <div class="form-group">
-        <label>Adresse e-mail :</label>
+      <div class="form-group-lg">
+        <label class="label-size col-form-label-lg">Adresse e-mail :</label>
         <input
           class="form-control"
           v-model="email"
@@ -13,8 +13,8 @@
           autofocus
         />
       </div>
-      <div class="form-group">
-        <label>Mot de passe :</label>
+      <div class="form-group-lg">
+        <label class="label-size col-form-label-lg">Mot de passe :</label>
         <input
           class="form-control"
           v-model="password"
@@ -24,8 +24,7 @@
           required
         />
       </div>
-      <hr />
-      <button class="btn btn-primary" type="submit">Connecter</button>
+      <button class="btn btn-primary btn-lg" type="submit">Connecter</button>
     </form>
   </div>
 </template>
@@ -59,12 +58,23 @@ export default {
 };
 </script>
 
-<style>
+<style lang='scss' scoped>
 .login {
-  margin: 10% auto;
-  width: 50%;
+  margin: 200px auto;
+  width: 70%;
 }
 .login h2 {
   margin-bottom: 5%;
+  font-size: 3em;
+}
+label, button {
+  font-size: 1.5rem;
+}
+.label-size {
+  font-size: 2em;
+}
+button {
+  font-size: 2em;
+  margin-top: 30px;
 }
 </style>

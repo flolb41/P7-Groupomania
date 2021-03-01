@@ -8,20 +8,20 @@
           type="checkbox"
           name="name"
           @click="disabled = !disabled"
-          class="enable-name"
+          class="input-group enable-name"
         />
       </div>
-      <form class="form-group">
-        <label class="name">Nom :</label>
-        <input class="form-control" v-model="userData.name" disabled />
-        <label class="email">E-mail :</label>
+      <form class="form-group-lg">
+        <label class="name col-form-label-lg">Nom :</label>
+        <input class="form-control name-input" v-model="userData.name" disabled />
+        <label class="email col-form-label-lg">E-mail :</label>
         <input
           class="form-control"
           type="email"
           v-model="userData.email"
           disabled
         />
-        <label for="password1" class="password">Nouveau mot de passe :</label>
+        <label for="password1" class="password col-form-label-lg">Nouveau mot de passe :</label>
         <input
           class="form-control"
           id="password1"
@@ -31,7 +31,7 @@
           v-bind:disabled="disabled"
           minlength="8"
         />
-        <label for="password2" class="password-confirmation"
+        <label for="password2" class="password-confirmation col-form-label-lg"
           >Confirmez votre nouveau mot de passe :</label
         >
         <input
@@ -39,6 +39,7 @@
           id="password2"
           type="password"
           name="up2"
+          v-model="pwdConf"
           v-bind:disabled="disabled"
           minlength="8"
         />
@@ -47,11 +48,11 @@
     <div class="divider"></div>
     <div class="maj-compte"></div>
     <h3 class="maj">Mettre à jour mon compte</h3>
-    <button @click="updateUser" class="btn btn-success">Mettre à jour</button>
+    <button @click="updateUser" class="btn-lg btn-success">Mettre à jour</button>
     <div class="divider"></div>
     <div class="delete-user">
       <h3 class="supression">Supprimer mon compte</h3>
-      <button @click="deleteUser" class="btn btn-danger">Supprimer</button>
+      <button @click="deleteUser" class="btn-lg btn-danger">Supprimer</button>
     </div>
   </div>
 </template>
@@ -61,24 +62,27 @@ export default {
     return {
       userData: {},
       password: "",
+      pwdConf:"",
       disabled: true,
     };
   },
   methods: {
     updateUser() {
       const user = {
-        id: this.localStorage.getItem("id"),
+        id: localStorage.getItem("id"),
         name: this.userData.name,
         email: this.userData.email,
         password: this.password,
+        pwdConf: this.pwdConf
       };
       this.$store
         .dispatch("updateUser", user)
-        .then((res) => {
-          this.$router.push("/resources");
-          console.log(res.data);
+        .then(() => {
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          alert('Mots de passe différents, confirmation impossible !!');
+          console.log(err);
+        });
     },
     deleteUser() {
       const reponse = window.confirm(
@@ -102,9 +106,7 @@ export default {
   },
   mounted() {
     const userId = localStorage.getItem("id");
-    console.log(userId);
     this.$store.dispatch("getUserData", userId).then((response) => {
-      console.log(response.data);
       return this.userData = response.data;
     });
   },
@@ -112,18 +114,35 @@ export default {
 </script>
 <style lang="scss">
 .infos-compte {
-  margin: 110px 15% 0 15%;
+  margin: 120px 15% 0 15%;
+}
+.name-input {
+  text-transform: capitalize;
 }
 h3 {
-  font-size: 2em;
-  margin-bottom: 2%;
+  font-size: 2.5em;
+  margin-bottom: 20px;
   text-decoration: underline;
 }
 p {
-  font-size: 1.6em;
+  font-size: 2em;
 }
 .divider {
   border: 1px solid black;
-  margin: 4%;
+  margin: 40px;
+}
+.name, .email, .password, .password-confirmation {
+  font-size: 2em;
+}
+.btn-lg {
+  font-size: 1.5em;
+}
+form .name::first-letter {
+  text-transform: uppercase;
+}
+@media only screen and (max-width: 900px) {
+  .infos-compte {
+    margin: 10px 15% 0 15%;
+  }
 }
 </style>

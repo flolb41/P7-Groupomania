@@ -12,37 +12,40 @@ const User = db.user;
  * @param {*} next 
  */
 exports.register = (req, res, next) => {
-  console.log(req.body);
-  bcrypt
-    .hash(req.body.password, 10)
-    .then((hash) => {
-      const user = {
-        name: req.body.name,
-        email: req.body.email,
-        password: hash,
-      };
-      User.create(user)
-        .then((user) => {
-          res.status(201).send({
-            id: user.id,
-            name: user.name,
-            token: jwt.sign({ userId: user._id }, "RANDOM_TOKEN_SECRET", {
-              expiresIn: "24h",
-            }),
+  if (req.body.pwd === req.body.pwdConf) {
+    bcrypt
+      .hash(req.body.pwd, 10)
+      .then((hash) => {
+        const user = {
+          name: req.body.name,
+          email: req.body.email,
+          password: hash,
+        };
+        User.create(user)
+          .then((user) => {
+            res.status(201).send({
+              id: user.id,
+              name: user.name,
+              token: jwt.sign({ userId: user._id }, "RANDOM_TOKEN_SECRET", {
+                expiresIn: "24h",
+              }),
+            });
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message: err.message,
+            });
           });
-        })
-        .catch((err) => {
-          res.status(500).send({
-            message: err.message,
-          });
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: err.message || "Problème route register !",
         });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Problème route register !",
       });
-    });
-};
+  } else {
+    res.status(401).send({ message:'Attention le mot de passe saisi ne correspond pas !!' })
+  }
+  };
 
 /**
  * Connection d'un utilisateur
@@ -113,37 +116,41 @@ exports.getUserData = (req, res, next) => {
  * @param {*} next 
  */
 exports.update = (req, res, next) => {
-  bcrypt
-    .hash(req.body.password, 10)
-    .then((hash) => {
-      const user = {
-        name: req.body.name,
-        email: req.body.email,
-        password: hash,
-      };
-      User.update(user, { where: { email: req.body.email } })
-        .then((user) => {
-          res.status(201).send({
-            name: user.name,
-            email: user.email,
-            token: jwt.sign({ userId: user._id }, "RANDOM_TOKEN_SECRET", {
-              expiresIn: "24h",
-            }),
+  if (req.body.password === req.body.pwdConf) {
+    bcrypt
+      .hash(req.body.password, 10)
+      .then((hash) => {
+        const user = {
+          name: req.body.name,
+          email: req.body.email,
+          password: hash,
+        };
+        User.update(user, { where: { email: req.body.email } })
+          .then((user) => {
+            res.status(201).send({
+              name: user.name,
+              email: user.email,
+              token: jwt.sign({ userId: user._id }, "RANDOM_TOKEN_SECRET", {
+                expiresIn: "24h",
+              }),
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+            res.status(500).send({
+              message: err.message,
+            });
           });
-        })
-        .catch((err) => {
-          console.log(err);
-          res.status(500).send({
-            message: err.message,
-          });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).send({
+          message: err.message || "Problème route register !",
         });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send({
-        message: err.message || "Problème route register !",
       });
-    });
+  } else {
+    res.status(401).send({ message: 'Mots de passe incorrect, confirmation impossible !!' });
+  }
 };
 
 /**
