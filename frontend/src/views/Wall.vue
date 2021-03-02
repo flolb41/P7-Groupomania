@@ -13,7 +13,7 @@
               class="btn btn-danger btn-delete"
               @click="deleteMessage(message.id)"
             >
-              <i class="far fa-times-circle"></i>
+              <i class="far fa-trash"></i>
             </button>
           </div>
         </div>

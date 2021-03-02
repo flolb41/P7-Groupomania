@@ -41,17 +41,21 @@ export default {
     login() {
       let user = {
         email: this.email,
-        password: this.password
+        password: this.password,
       };
-      this.$store
-        .dispatch("login", user)
-        .then(() => {
-          this.$router.push("/resources");
+      if (this.email === "" || this.password === "") {
+        alert("Veuillez saisir vos identifiants !!");
+      } else {
+        this.$store
+          .dispatch("login", user)
+          .then(() => {
+            this.$router.push("/resources");
           })
-        .catch((err) => {
-          console.log(err);
-          alert('Identifiants invalides !! Veuillez vérifier votre saisie.')
+          .catch((err) => {
+            console.log(err);
+            alert("Identifiants invalides !! Veuillez vérifier votre saisie.");
           });
+      }
     },
   },
 };
@@ -66,7 +70,8 @@ export default {
   margin-bottom: 5%;
   font-size: 3em;
 }
-label, button {
+label,
+button {
   font-size: 1.5rem;
 }
 .label-size {

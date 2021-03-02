@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <h1 class="cover-heading">C'est l'heure de la pause ?</h1>
-    <p class="desc">
+    <h1 class="cover">C'est l'heure de la pause ?</h1>
+    <p class="desc-text">
       Alors essayez la nouvelle application Groupomania créée pour vous, ses
       collaborateurs afin de développer vos idées, vos suggestions. Parlez-en
       autour de vous !!
@@ -44,6 +44,13 @@ export default {
 }
 a {
   margin: 2%;
+}
+.cover {
+  font-size: 4em;
+  margin-bottom: 40px;
+}
+.desc {
+  font-size: 2em;
 }
 h2 {
   width: 100%;
