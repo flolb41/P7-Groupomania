@@ -11,6 +11,11 @@ const router = express.Router();
 router.post("/", messageCtrl.create);
 
 /**
+ * Modifier un message.
+ */
+router.put("/update/:id", messageCtrl.update);
+
+/**
  * Retrouver tous les messages.
  */ 
 router.get("/all", messageCtrl.findAll);

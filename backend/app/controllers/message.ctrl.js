@@ -1,11 +1,11 @@
-const { message } = require('../models/message.model')
+const { message } = require("../models/message.model");
 const db = require("../models");
-const { user } = require('../models');
+const { user } = require("../models");
 const Message = db.message;
 
 /**
  * Creation d'un message
- *  */ 
+ *  */
 exports.create = (req, res) => {
   if (!req.body.title) {
     res.status(400).send({
@@ -17,7 +17,7 @@ exports.create = (req, res) => {
     userId: req.body.userId,
     title: req.body.title,
     content: req.body.content,
-    published: true
+    published: true,
   };
   Message.create(message)
     .then((message) => {
@@ -26,44 +26,79 @@ exports.create = (req, res) => {
     .catch((err) => {
       console.log(err);
       res.status(500).send({
-        message: 
+        message:
           err.message || "Some error occurred while creating the Message.",
       });
     });
 };
 
 /**
+ * Modifier un message
+ */
+exports.update = (req, res) => {
+  let message = {
+    id: req.body.id,
+    title: req.body.title,
+    content: req.body.content,
+  };
+  //  Vérification du contenu du nouveau message
+  if (!message.content) {
+    return res.status(400).send({
+      message: "Le message ne peut pas être vide",
+    });
+  }
+  // Trouver le message et le modifier
+  Message.update(message, {
+    where: { id: message.id }
+  })
+    .then((message) => {
+      if (!message) {
+        return res.status(404).send({
+          message: "id message introuvable " + req.body.id,
+        });
+      }
+      res.send(message);
+    })
+    .catch((err) => {
+      if (err.kind === "ObjectId") {
+        return res.status(404).send({
+          message: "Id du message introuvable " + req.body.id,
+        });
+      }
+      return res.status(500).send({
+        message: "Erreur de modification avec l'Id " + req.body.id,
+      });
+    });
+};
+
+/**
  * Retrouver tous les messages
- *  */ 
+ *  */
 exports.findAll = (req, res) => {
   Message.findAll({
     include: [
       {
         model: db.user,
-      }
-    ]
+      },
+    ],
   })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
-      res
-        .status(500)
-        .send({
-          message:
-            err.message || "Some error occurred while retrieving messages.",
-        });
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving messages.",
+      });
       console.log(err);
     });
 };
 
-
 /**
  * Supression d'un message par son id.
- *  */ 
+ *  */
 exports.delete = (req, res) => {
   const id = req.body.id;
-  console.log(id)
   Message.destroy({
     where: { id: id },
   })
@@ -87,7 +122,7 @@ exports.delete = (req, res) => {
 
 /**
  * Supprimer tous les messages.
- *  */ 
+ *  */
 exports.deleteAll = (req, res) => {
   Message.destroy({
     where: {},

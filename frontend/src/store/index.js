@@ -167,6 +167,23 @@ export default new Vuex.Store({
           });
       });
     },
+    updateMessage({ commit }, newMessage) {
+      return new Promise((resolve, reject) => {
+        commit("auth_request");
+        axios({
+          url: "http://localhost:3000/api/message/update/" + newMessage.id,
+          data: newMessage,
+          method: "PUT",
+        })
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((err) => {
+            commit("auth_error", err);
+            reject(err);
+          });
+      });
+    },
     deleteMessage({ commit }, message) {
       return new Promise((resolve, reject) => {
         commit("auth_request");
