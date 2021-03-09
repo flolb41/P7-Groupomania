@@ -18,32 +18,26 @@
             >
               <i class="far fa-trash"></i>
             </button>
-              <div class="interior">
-                <a class="btn" href="#open-modal"
-                  ><button
-                    v-if="userIdLogged == message.user.id"
-                    class="btn btn-warning btn-modify"
-                    @click="showModal = true"
-                  >
-                    <i class="far fa-edit"></i></button
-                ></a>
-            </div>
-            <div id="open-modal" class="modal-window">
-              <div>
-                <a href="#" title="Close" class="modal-close">Fermer</a>
-                <h1>Modifiez votre message</h1>
-                <form action="">
-                    <div class="new-title form-group">
-                    <label>Titre :</label>
-                    <input type="text" v-model="message.title">
+           
+            <button
+              v-if="userIdLogged == message.user.id"
+              class="btn btn-warning btn-modify"
+              @click="openUpdate()"
+            >
+              <i class="far fa-edit"></i>
+            </button>
+            <div v-if="update == true && userIdLogged == message.user.id" class="updateMessage">
+                  <form action="">
+                    <div class="title form-group">
+                      <label for="title">Titre :</label>
+                      <input v-model="message.title" type="text">
                     </div>
-                    <div class="new-content form-group">
-                      <label for="">Message :</label>
-                      <textarea v-model="message.content"></textarea>
+                    <div class="message form-group">
+                      <label for="content">Message :</label>
+                      <textarea v-model="message.content" name="content" id="new-content" cols="30" rows="3"></textarea>
                     </div>
-                    <button @click.prevent="updateMessage(message)" class="btn btn-success">Envoyer</button>
-                </form>
-              </div>
+                    <button @click.prevent="updateMessage(message)" class="btn-success" >Envoyer</button>
+                  </form>
             </div>
           </div>
         </div>
@@ -73,14 +67,9 @@ export default {
   data() {
     return {
       allMessages: [],
-      message: {
-        id: this.id,
-        title: this.title,
-        content: this.content,
-        createdAt: this.createdAt
-      },
+      message: {},
+      update: false,
       userIdLogged: localStorage.getItem("id"),
-      
     };
   },
   methods: {
@@ -98,13 +87,17 @@ export default {
           .catch((err) => console.log(err));
       }
     },
+    openUpdate() {
+      return this.update = !this.update;
+    },
     updateMessage(message) {
-        let newMessage = {
-          id: message.id,
-          title: message.title,
-          content: message.content
-        };
-        this.$store
+      const newMessage = {
+        id: message.id,
+        title: message.title,
+        content: message.content
+      };
+      console.log(newMessage);
+      this.$store
           .dispatch("updateMessage", newMessage)
           .then(() => {
             document.location.reload();
@@ -146,81 +139,20 @@ export default {
 .created-by {
   font-size: 200%;
   text-transform: capitalize;
-}.modal-window {
-  position: fixed;
-  background-color: rgba(255, 255, 255, 0.25);
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 999;
-  visibility: hidden;
-  opacity: 0;
-  pointer-events: none;
-  transition: all 0.3s;
-  &:target {
-    visibility: visible;
-    opacity: 1;
-    pointer-events: auto;
-  }
-  & > div {
-    width: 800px;
-    height: 300px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 2em;
-    background: white;
-    border: 1px solid black;
-  }
-  header {
-    font-weight: bold;
-  }
-  h1 {
-    font-size: 3em;
-    margin: 0 0 15px;
-  }
-  label {
-    font-size: 2em;
-  }
-  input, textarea {
-    font-size: 2em;
-    width: 85%;
-    float: right;
-  }
-  form {
-    margin-top: 50px;
-    display: flex;
-    flex-direction: column;
-  }
-  button {
-    font-size: 2em;
-    width: 30%;
-    margin: auto;
-  }
 }
-
-.modal-close {
-  color: #aaa;
-  line-height: 50px;
+i {
   font-size: 2em;
-  position: absolute;
-  right: 0;
-  text-align: center;
-  top: 0;
-  width: 70px;
-  text-decoration: none;
-  &:hover {
-    color: black;
-  }
 }
-
+.updateMessage {
+  font-size: 2em;
+}
+input, textarea {
+  width: 80%;
+}
 @media only screen and (max-width: 900px) {
   .card {
     width: 90%;
   }
 }
-
 @import "~bootstrap/dist/css/bootstrap.css";
 </style>
