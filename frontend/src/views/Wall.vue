@@ -37,6 +37,7 @@
                       <textarea v-model="message.content" name="content" id="new-content" cols="30" rows="3"></textarea>
                     </div>
                     <button @click.prevent="updateMessage(message)" class="btn-success" >Envoyer</button>
+                    <button @click="openUpdate()" class="btn-danger">Annuler</button>
                   </form>
             </div>
           </div>
@@ -145,9 +146,13 @@ i {
 }
 .updateMessage {
   font-size: 2em;
+  margin-top: 30px;
 }
 input, textarea {
   width: 80%;
+}
+.updateMessage button {
+  margin-left: 2%;
 }
 @media only screen and (max-width: 900px) {
   .card {
